@@ -18,11 +18,6 @@ variable "vpc_id" {
 variable "security_group_id" {
 	
 }
-#temporary
-#variable "subnet_id" {
-
-#}
-
 variable "webservers_ami" {
   default = "ami-093d2024466a862c1"
 }
