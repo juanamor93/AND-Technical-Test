@@ -1,5 +1,4 @@
-  
-terraform {
+  terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -12,23 +11,14 @@ terraform {
 provider "aws" {
   region = "eu-west-2"
 }
-
+# VPC Module
 module "vpc" {
   source = "./aws-modules/vpc"
-}
-
-module "web_server_sg" {
-  source = "./aws-modules/security-group"
   vpc_id = module.vpc.vpc_id
 }
-
-
-
-/* module "webserver" {
-    source = "./aws-modules/ec2-instance"
-
-    servername = ""
-    size = "t3.micro"
-  
-} */
-
+# EC2 Module
+module "webservers" {
+    source = "./aws-modules/ec2-instances"
+    vpc_id = module.vpc.vpc_id
+    security_group_id = module.vpc.security_group_id
+} 
