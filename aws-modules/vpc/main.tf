@@ -5,7 +5,6 @@ resource "aws_vpc" "web_vpc" {
     Name = "web_vpc"
   }
 }
-
 # Default Security Group
 resource "aws_default_security_group" "web_server_sg" {
   vpc_id = var.vpc_id
@@ -24,9 +23,6 @@ ingress {
     cidr_blocks     = ["0.0.0.0/0"]
   }
 }
-
-
-
 # Internet Gateway
 resource "aws_internet_gateway" "web_igw" {
   vpc_id = aws_vpc.web_vpc.id
@@ -34,7 +30,6 @@ resource "aws_internet_gateway" "web_igw" {
     Name = "main"
   }
 }
-
 # Subnets : public
 resource "aws_subnet" "public" {
   count = length(var.subnets_cidr)
