@@ -1,7 +1,7 @@
 # AND-Technical-Test
 Terraform a load balanced web front end in AWS
 
-![schema](images/webpage.png)
+![webpage](images/webpage.png)
 
 •	The solution should incorporate a number of elements
 ![](images/tf-elements.png)
