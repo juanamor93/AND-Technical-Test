@@ -3,15 +3,57 @@
   name_prefix   = "web-lc-"
   image_id      = var.webservers_ami
   instance_type = var.instance_type
-  
+
   user_data = <<-EOF
-    #!/bin/bash
+  #!/bin/bash
+  
+  ##### Install HTTPD
     yum update -y
     yum install -y httpd.x86_64
     systemctl start httpd.service
     systemctl enable httpd.service
-    echo “Hello World from $(hostname -f)” > /var/www/html/index.html
-    EOF
+
+    ##### Constants
+
+    TITLE="Hello World!"
+    RIGHT_NOW="$(date +"%x %r %Z")"
+    TIME_STAMP="$RIGHT_NOW"
+
+
+    ##### Main
+
+    cat > /var/www/html/index.html<<- _EOF_
+
+    <html>
+    <head>
+        <title>$TITLE</title>
+    </head>
+
+    <body>
+        <h1>$TITLE</h1>
+
+        <p>$TIME_STAMP</p>
+        <p>This website was created with Terraform with the following AWS resources:</p>
+        <p>aws_vpc<p>
+        <p>aws_subnet x2<p>
+        <p>aws_route_table_association x2<p>
+        <p>aws_route_table<p>
+        <p>aws_internet_gateway<p>
+        <p>aws_default_security_group<p>
+        <p>aws_security_group<p>
+        <p>aws_alb_target_group<p>
+        <p>aws_alb_listener x2<p>
+        <p>aws_alb<p>
+        <p>aws_launch_configuration<p>
+        <p>aws_cloudwatch_metric_alarm<p>
+        <p>aws_autoscaling_policy<p>
+        <p>aws_autoscaling_group<p>
+        <p>aws_autoscaling_attachment<p>
+    </body>
+  </html>
+_EOF_
+EOF
+  
     
     lifecycle {
     create_before_destroy = true
@@ -25,7 +67,7 @@ resource "aws_autoscaling_group" "web-asg" {
   min_size             = 2
   max_size             = 4
 
-  
+
   tag {
     key                 = "Name"
     value               = "TestSiteServer"
